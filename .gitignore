@@ -1,0 +1,8 @@
+# eclipse specific
+.project
+.cproject
+.settings/
+
+# system
+.DS_Store
+Debug/

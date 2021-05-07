@@ -1,0 +1,283 @@
+ 
+PREPARE_CAST:  load raw data and store into MAT files
+sticking primary O into secondary O
+save data/ctdprof/ctdprof002 ctdprof -v6;
+sticking primary O into secondary O
+save data/ctdtime/ctdtime002 timctd data -v6;
+sticking primary O into secondary O
+save data/nav/nav002 timnav data -v6;
+ 
+RDILOAD:  load ADCP data
+    Loading down-data data/raw_ladcp/002/002DN000.000
+    Detected BB or WH data
+    blank length downlooker: 1.76 m
+    Read 16261 ensembles with 12 bins each
+    Loading up-data data/raw_ladcp/002/002UP000.000
+    blank length uplooker: 1.76 m
+    Read 16265 ensembles with 25 bins each
+>   data at beginning of downlooker is missing
+>   padding data set
+    Shifting ADCP timeseries by 130 ensembles
+    Time-lag: 130 time steps    Correlation : 0.99951
+    Number of joint ensembles is : 16262
+    Down looking instrument ID : 16386
+    Up looking instrument ID   : 16387
+    Found 258 finite RDI bottom velocities
+    Detected  8 %  3 BEAM solutions up-looking
+    Detected  6 %  3 BEAM solutions down-looking
+    Removed 1549 values because of high error velocity
+    Removed 2 bottom values because of high error velocity
+ 
+LOADING:  load the prepared MAT files
+    NAV    : loading NAV time series data/nav/nav002.mat
+      Number of NAV lines     : 10417
+      Data rate               : 0.95041 seconds
+    CTDTIME: loading CTD-time series data/ctdtime/ctdtime002.mat
+      Number of CTD-time lines: 10417
+      Data rate               : 0.95041 seconds
+    CTD    : loading CTD profile data data/ctdprof/ctdprof002.mat
+      Number of CTD-prof lines: 5343
+    SADCP  : loading SADCP profile data data/sadcp/sadcp002.mat
+>   Can not find data/sadcp/sadcp002.mat
+ 
+MERGEDATA:  merge ADCP, navigational, and CTD-time data
+    ADCP data coverage:
+      2021-03-13 11:14:16  to  2021-03-13 15:56:06
+    Navigation data coverage:
+      2021-03-13 11:56:47  to  2021-03-13 15:45:52
+>   Found 3044 LADCP data outside navigational data coverage
+>   There might be a problem with your navigational data extraction
+>     Will continue anyway.
+>   Replacing missing values by nearest nav value
+    CTD data coverage:
+      2021-03-13 11:56:47  to  2021-03-13 15:45:52
+ 
+    CTD max depth : 5236
+    chunkwise acceleration lag: 137  correlation: 0.15769
+    all data lag              : 81  correlation: 0.5885
+    all data integral lag     : 150  correlation: 0.97422
+    median lag 3
+    most popular lag -1
+    best correlated lag 150
+    CALC_ADCP_CTD_LAG :  best lag is: 150  for which 5% of 22 lag calculations agree
+    Best W lag at: 150 CTD scans ~-148 seconds  corr:0.97422
+    Adjusting CTD time to ADCP time and shift depth record 
+ 
+IMPROVE:  apply various improvements to the data
+    Outlier discarded 5607 bins down looking
+    Outlier discarded 12 bottom track
+    Outlier discarded 12179 bins up looking
+    Applying magnetic deviation of: -10.0423
+    Removing 2214 values because of vertical speed deviates > 0.2 m/s
+    Removing 2511 values because of horizontal speed > 2.5 m/s
+    Removing 3 profiles due to tilt larger than 22
+    Removing 576 profiles due to tilt difference larger than 4
+ 
+GETBTRACK:  create own bottom track data in addition to RDI
+    in: p.btrk_mode 3 and p.btrk_used 1
+    Found 253 RDI bottom track values 
+    Using high bottom echo amplitudes to create bottom track
+    localmax2: found 2182 valid values
+    Using 0.5 bins below maximum target strength for own bottom track velocity
+    Created 223 bottom distances keeping original
+    Removed 39 bottom track profiles W_btrk - W_ref difference > 0.05
+    Boutlier removed 4 bottom track velocities 
+    Created 179 bottom track velocities keeping original
+    out: p.btrk_mode 3 and p.btrk_used 1
+ 
+CALC_DEPTH:  determine the depth of the LADCP during cast
+    Calculating simple LADCP depth from w
+>   Found no surface reflections up-cast
+    Maximum depth from int W is : 5236
+    Preset maximum depth is     : NaN
+    Found bottom at 5343 +/- 10 m
+    Using CTD pressure record for depth
+    LADCP minus CTD depth mean: 38.5434  std: 256.7744
+ 
+CALC_SOUNDSP:  calculate sound speed profile and correct the raw data
+    Calculating soundspeed from CTD profile 
+    Correcting all ADCP velocities for sound speed 
+ 
+CALC_DEPTH:  determine the depth of the LADCP during cast
+    Calculating simple LADCP depth from w
+>   Found no surface reflections up-cast
+    Maximum depth from int W is : 5236
+    Preset maximum depth is     : NaN
+    Found bottom at 5346 +/- 11 m
+    Using CTD pressure record for depth
+    LADCP minus CTD depth mean: 369.1844  std: 261.1482
+ 
+MISC_CUT_PROFILE:  cut raw LADCP data to only the profile part
+    Removing 3008 values below bottom or above surface
+    Removing data at beginning and end of cast
+      adjusting start and end time 
+ 
+EDIT_DATA:  apply various editing algorithms to velocities
+    Side-lobe contamination   : set 605 weights to NaN
+    Spike filter              : set 4615 weights to NaN
+ 
+PREPINV:  prepare data for inversion
+    Reducing weights for tilts larger than 10 degree
+    Mean heading offset based on compass is -91.1444 deg
+    Mean heading offset based on tilt is -92.1428 deg
+    Rot up2down is using average up/down compass
+ 
+CALC_ENS_AV: forming Super-Ensembles
+    Averaging profiles over (p.avdz) 8 m
+    Removing reference velocity and average ensembles 
+    Outlier discarded 510 bins down looking
+    Outlier discarded 1213 bins up looking
+    Found 0 bottom track std==0 set to 0.1 m/s
+    Found 18 finite bottom track ensembles
+    Discarded 2 bottom tracks velocities because of wstd  > 0.048565
+    Setting 214 weight values to NaN  because super ensemble std=0 
+    Setting 45 values to minimum super ensemble std 0.025136
+    Reduced ensemble size is 1077
+ 
+LANARROW:  remove outliers in superensembles
+ 
+GETINV:  compute optimal velocity profile
+    Barotropic (navigation) velocity error : 0.0043972 [m/s]
+    Super ensemble velocity error : 0.010676 [m/s]
+    Vertical resolution (ps.dz) is 8 [m]
+    Using super ensemble std based weights normalized by 0.02 m/s (figure 16 lower graph)
+    Preaveraged GPS ship vel 0 times 
+    Removed 652 constraints below minimum weight 
+    Smoothing Ocean velocity profile
+    Found 2 ill constrained elements will smooth 
+    Smoothing CTD velocity profile
+    Found 3 ill constrained elements will smooth 
+    Bottom inversion 
+    16 bottom track ctd-vel weights of about : 0.83209
+    Weight for bottom track is (ps.botfac) 1
+    No SADCP data
+    lainbaro: 6% of profile have no useful data 
+    Normalized barotropic constraint weight: 2.7838
+    Mean individual ctd velocity weight : 214.7243
+    ready for inversion  length of  d:  22857
+              (CTD vel)  length of A1:   1076
+            (ocean vel)  length of A2:    664
+  Cholesky transform
+>   uctd timing interpolation problem
+>   using constant uctd to extrapolate
+    Sorry dz not constant, looping over 23063 elements
+    Giving low weight to the 1% of data scans deviating most
+ 
+PREPINV:  prepare data for inversion
+    Mean heading offset based on compass is -91.1444 deg
+    Mean heading offset based on tilt is -92.1428 deg
+    Removing first guess ocean velocity from raw data
+    Adjusted for velocity offset in up and down looking ADCP
+    Removing first guess ocean velocity from raw data
+    Rot up2down is using average up/down compass
+    Rotated earlier, using only difference 
+ 
+CALC_ENS_AV: forming Super-Ensembles
+    Averaging profiles over (p.avdz) 8 m
+    Removing reference velocity and average ensembles 
+    Outlier discarded 511 bins down looking
+    Outlier discarded 1195 bins up looking
+    Found 0 bottom track std==0 set to 0.1 m/s
+    Found 18 finite bottom track ensembles
+    Discarded 2 bottom tracks velocities because of wstd  > 0.048565
+    Setting 213 weight values to NaN  because super ensemble std=0 
+    Setting 42 values to minimum super ensemble std 0.025136
+    Reduced ensemble size is 1077
+ 
+GETINV:  compute optimal velocity profile
+    Barotropic (navigation) velocity error : 0.0043972 [m/s]
+    Super ensemble velocity error : 0.010676 [m/s]
+    Setting velocity error to :0.030438 [m/s]
+    RDI standard deviation (down,up) :0.0078878      0.0173 [m/s]
+    Vertical resolution (ps.dz) is 8 [m]
+    Using super ensemble std based weights normalized by 0.030438 m/s (figure 16 lower graph)
+    Preaveraged GPS ship vel 0 times 
+    Removed 638 constraints below minimum weight 
+    Smoothing Ocean velocity profile
+    Found 4 ill constrained elements will smooth 
+    Smoothing CTD velocity profile
+    Found 3 ill constrained elements will smooth 
+    Bottom inversion 
+    16 bottom track ctd-vel weights of about : 1.4219
+    Weight for bottom track is (ps.botfac) 1
+    No SADCP data
+    lainbaro: 6% of profile have no useful data 
+    Normalized barotropic constraint weight: 4.2366
+    Mean individual ctd velocity weight : 410.2959
+    ready for inversion  length of  d:  23551
+              (CTD vel)  length of A1:   1076
+            (ocean vel)  length of A2:    664
+  Moore-Penrose inverse
+>   uctd timing interpolation problem
+>   using constant uctd to extrapolate
+    Sorry dz not constant, looping over 23080 elements
+    Solving only down trace
+    Smoothing Ocean velocity profile
+    Found 5 ill constrained elements will smooth 
+    Smoothing CTD velocity profile
+    Found 3 ill constrained elements will smooth 
+  Cholesky transform
+    Solving only up trace
+    Smoothing Ocean velocity profile
+    Found 3 ill constrained elements will smooth 
+    Smoothing CTD velocity profile
+    Found 1 ill constrained elements will smooth 
+  Cholesky transform
+ 
+CHECKINV:  displaying check values 
+    The following values are given in [m/s] 
+    Velocity profile error:  0.028  should be about noise:  0.023
+    Check bottom track rms:  0.006  should be smaller than  0.059 /  1.000
+    GPS-LADCP ship spd diff: 0.000  should be smaller than  0.004 /  1.000
+ 
+CHECKBTRK:  check bottom track against U_ctd solution 
+    Using CTD pressure derived W
+    Using inbetween w-ref
+    Profiles within give acceptable range: 536
+    U bias : 0.007 [m/s]  std: 0.053 [m/s]
+    V bias :-0.006 [m/s]  std: 0.046 [m/s]
+    W bias : 0.103 [m/s]  std: 0.693 [m/s]
+    W slope fact :-0.0878 [1/m] lower W below bottom 
+    W diff :0.1499 [m/s] ping to ping w difference 
+    H std :  11.0 [m]  large means bottom is rough/sloped
+    Tilt mean :4.5 +/- 1.4 [^o]  
+ 
+CALC_SHEAR3:  calculate a baroclinic velocity profile based on shears only
+    Averaging shear profile over (ps.dz) 8 [m]
+    Maximum allowed std within calculation intervals : 2
+    Data deviating more from the median will be discarded.
+>   Increasing error estimate because of elevated shear - inverse difference
+>   by a factor of 1.4713
+>   std of difference between regular and shear profile : 0.06844 [m/s]
+ 
+CHECK_BATTERY:  display the battery voltage
+>   Do not have calibration coefficient for this instrument.
+>     To get battery information in the future, please measure the
+>     battery voltage after the cast and divide it by
+>     90.3297
+>     Then enter the line:
+>     12542746133   Your-Serialnumber   Your-Value
+>     in the file  m/batt_info.dat  .
+>     You can also send the info to gkrahmann@ifm-geomar.de
+>     so that it will be included in future software updates.
+>   Battery voltage is unknown. Need calibration coeff.
+ 
+LADCP WARNINGS                                                              
+>   Found LARGE timing difference between ADCPs !                           
+>   Increasing error estimate because of elevated shear - inverse difference
+>   Battery voltage is unknown. Need calibration coeff.                     
+ 
+LADCP processing warnings: 
+ 
+SAVING RESULTS
+save profiles/SAGA_002.mat ts dr p ps f -v6;
+ 
+    Writing processing protocol profiles/SAGA_002.txt
+ 
+    Processing took 235 seconds
+CLOSE ALL
+{Cannot find an exact (case-sensitive) match for 'CLOSE'
+
+The closest match is: close in
+/Applications/MATLAB_R2020a.app/toolbox/matlab/graphics/close.p
+} 

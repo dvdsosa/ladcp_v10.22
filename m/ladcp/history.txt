@@ -1,0 +1,494 @@
+Development history
+
+Changes in 10.22
+
+- many functions
+  changed the time base from the functions julian/gregorian
+  to Matlab's datenum/datevec
+
+- several functions
+  removed the archiving part as it has not been maintained in the last years
+  to reimplement it, some routines need to be rewritten
+
+Changes in 10.21
+
+- rdiload.m
+  handle a special case when the downlooker ran through but the
+  uplooker stopped recording after a while
+
+- prepare_cast.m
+  fixed missing time info when reloading files
+
+- process_cast.m  calc_soundsp.m
+  fix bug with preset bottom depth
+
+- plot_result.m
+  added color ids to title
+
+- bestlag2.m
+  catch a problematic condition
+
+- edit_data.m
+  allow to remove second PPI
+
+- calc_soundsp.m
+  calculate depth from CTD pressure profile
+
+- rdiload.m
+  display 3rd check figure also for timoff_downlooker
+
+- calc_ens_av.m
+  better handle case of only uplooker
+
+- calc_depth.m
+  when integrating w for the depth, then subtract the mean w so that
+  the integration ends at the same depth as the start
+
+- magedev.m
+  update to IGRF12, observed until end of 2014, predicted until end of 2019
+
+- calc_soundsp.m
+  set zbottom to 0 to force a recalculation of the bottom in
+  case a sound speed profile has been applied
+
+- plot_result.m
+  catch NaN in an axis call
+  happens only with very very shallow and short profiles
+
+- saveres.m  default_params.m
+  Add the option to save down and up (separate) target strength in the
+  lad file. Also stored is the time for these values so that to a
+  very limited degree the temporal evolution of the target strength
+  can be examined.
+
+- getinv.m  lanarrow.m  process_cast.m
+  Should there be to little usable data, terminate the processing.
+
+- calc_depth.m  default_params.m
+  introduced the parameter  params.interpolate_missing_w = 1;
+  before these were set to 0
+  in case of many missing this lead to significantly wrong
+  simple integrated w depths
+
+- mergedata.m
+  better screen info
+
+- rdiload.m
+  more screen info
+
+- default_params.m
+  setting   params.use_3beam_w_for_lag = 1;  as a default
+  as there appears to be no reason to not do this.
+
+- plot_raw_info.m
+  display info that beam performance is not reliably calculated for
+  shallow profiles (here <200m)
+
+- read_sbe_cnv.m
+  updated to new version
+  needs to be checked for special case when NMEA and computer time differ
+
+- calc_shear3.m
+  cleaned up code and fixed some inconsistencies
+
+Changes in 10.20
+
+- process_cast.m
+  simplified shear if-else statement
+
+- whread.m
+  check for backward time jumps 
+
+- suplabel.m
+  removed Latex interpreter
+
+- bestlag2.m
+  catch cases of no usable data, which previously led to a crash
+  now they return a NaN as correlation.
+
+- default_params.m
+  changed   mask_last_bin  to always have two elements for [down,up]
+
+- rdiload.m 
+  added blank length output on the screen   GK  
+
+- changed default saved plots to jpg instead of ps    GK
+
+- calc_soundsp.m
+  catch cases of all NaN sound speed  GK 
+  fix small bug when only ctdtime was given  GK
+
+- improve.m
+  catch values.lat/lon==NaN  GK
+
+Changes in 10.19
+
+- rdiload.m  default_params.m   GK
+  replaced our b2earth with that of Andreas Thurnherr.
+  This now allows for 3beam solutions in beam coordinates
+  and has the possibly buggy bin-remapping permanently disabled.
+
+  p.timoff_downlooker in case the downlooker clock is wrong alone
+
+Changes in 10.18
+
+- default_params.m  GK
+  disable  smallfac  forcing of small shears as a default  
+
+- getinv.m  GK
+  apparently smallfac was set whether it was set from the
+  outside or not. Now only set it, if it is not already set.
+
+- process_cast.m  GK
+  for unknown reasons the 'messages' argument was not
+  given to getbtrack
+
+- rdiload.m  GK
+  fixed bug in size call in b2earth
+
+- edit_data.m  GK
+  there seems to have been a bug in the editing of the last bin
+  this is fixed now.
+  Since there were no complaints apparently nobody but myself is using it...
+
+Changes in 10.17
+
+- calc_ens_av.m  process_cast.m  GK
+  Catch profiles that are too shallow.
+
+- plot_controls.m  GK
+  use sfigure
+  add clf
+
+- plot_result.m  GK
+  add check for very veyr short profiles, that failed to plot properly
+
+- misc_fix_compass.m  improve.m  default_params.m  GK
+  Allow a deviation table to be given for the down looker. All velocities
+  are rotated accordingly.
+
+- rdiload.m  GK
+  When filling gaps, this now happens with NaN instead of 0.
+
+- prepinv.m  GK
+  replaced mean with nmean in compoff internal function
+  This takes care of dual systems with lots of NaN in one heading.
+
+- calc_ens_av.m  GK
+  Now using the proper new variable for the single ping error when
+  not averaging anything.
+  If the profile is shallower than 100m, do no averaging.
+
+- calc_soundsp.m  GK
+  Using now preferably the CTDprof data to calculate the sound speed
+  for every time step. For unkown reasons salinity was fixed to
+  34.5 for the sound speed calculation in the ctdtime data. This should
+  however make no or only tiny differences in old data sets.
+ 
+  Replaced interp1q with interp1 as it was giving really strange results!
+
+- calc_depth.m  GK
+  in case there are two pressure sensors in two ADCPs and we have to resort
+  to using this data, then average the two sensors
+
+- rdiload.m  default_params.m  GK
+  introduce a new parameter  params.use_3beam_w_for_lag
+  usually the master-slave correlation routine uses only data with 4 beam solutions
+  there are cases when there is basically only 3 beams solutions and this is good data
+  the correlation routine then failed to determine the lag properly
+  now the routine can be forced to also use 3 beam solution data to determine the lag
+
+Changes in 10.16
+
+- process_cast.m  GK
+  save full mat file information 
+  the parameter existed, but it was not implemented
+
+- merge_data.m, default_params.m  GK
+  new parameter  params.forced_adcp_ctd_lag
+  can be used if the built-in routine does not properly recognize the lag  
+
+- read_sbe_cnv.m  GK
+  new variables and handling of special cases
+
+- rdiload.m  default_params.m  GK
+  params.timoff_uplooker
+  with this one a time offset between up and downlooker can be corrected
+  
+Changes in 10.15
+
+- get_err.m  GK
+  Fixed a problem with the extrapolation of u-ctd. Don't know whether the
+  extrapolation was ever necessary, but the way I ensured no interpolation 
+  problems was by itself problematic and lead to too high error estimates 
+  near the surface. These were very obvious in the error plots (uocean) of
+  shallow profiles.
+
+- process_cast.m  GK
+  add argument to suppress saving of plots
+  this speeds up testing of parameters
+
+- default_params.m  misc_composefilenames.m  rdiload.m  GK
+  moved file name and directory composition from default_params.m
+  to misc_compose_filenames.m
+  moved check for multiple files to rdiload.m
+  This fixes a bug where multiple 000 files were only recognized when
+  process_cast was run a second time.
+
+- rdiload.m  GK
+  changed warning/display of 3-beam solutions   
+
+Changes in 10.14
+
+- calc_depth.m  GK
+  fixed bug in surface weights
+  thanks to Frederic Marin
+
+- rdiload.m  GK
+  changed warning for missing instrument serial number
+
+- xcorr3.m  GK
+  added a simple function to calculate the cross correlation
+  thanks to Frederic Marin
+
+- edit_data.m  misc_cut_profile.m  nbread.m  getinv.m  calc_sadcp_av.m     GK
+  exchanged sind/cosd with sin_d/cos_d
+  thanks to Frederic Marin
+
+- plot_result.m
+  display instrument serial numbers, if available
+
+
+Changes in 10.13
+
+- calc_depth.m  GK
+  commented and simplified in dinset.m
+  fixed bug in calculation of bottom depth when no CTD data is
+  available
+
+Changes in 10.12
+
+- default_params.m rdiload.m  GK
+  new parameter to force resampling of uplooker to downlooker timing.
+  no resampling beyond 10 seconds time difference
+
+- calc_soundsp.m  GK
+  small bug that only mattered when up or down needed to be extrapolated
+
+- merge_data.m  24.09.2011  GK
+  replaced a nmedian by a meanmediannan as we had jumpy timesteps that
+  did not result in a good lag calculation when the lag was very long
+
+- read_sbe_cnv  24.09.2011  GK
+  add flag for read_sbe_cnv to disable the setting of data to NaN when
+  the pump status is off
+
+- misc_fix_compass.m  29.08.2011  GK
+  this function apparently was never used so it contained 
+  a number of bugs
+
+- improve.m  29.08.2011  GK
+  typo
+
+- read_sbe_cnv.m  25.08.2011  GK
+  changed handling of missing c_pri/s_pri 
+
+- calc_rdi_std.m getinv.m  10.06.2011  GK
+  new function to 'model' RDI's standard deviation given
+  by PlanADCP
+  these values are now displayed by getinv.m and should
+  compare well with the standard deviation estimated from the data
+
+- whread.m rdiload.m rdihead.m  10.06.2011  GK
+  read NB/BB mode from raw data
+
+- prepinv.m getinv.m  10.06.2011  GK
+  added second weight matrix plot
+
+- bestlag2.m  02.06.2011  GK
+  bug fix for too short data series
+
+- sin_d.m  cos_d.m  31.05.2011  GK
+  renamed sind.m and cosd.m as these function now exist in Matlab
+  we keep our own for backward compatibility
+
+- figload.m  31.05.2011  GK
+  fixed small bug with Matlab versions >7.9
+
+- edit_data.m  31.05.2011  GK
+  use a given waterdepth from params.zbottom in PPI calculations
+
+- prepinv.m  29.05.2011  GK
+  rewrite of the two-instrument merger rotation part
+  should not have changed functionality
+
+- getbtrck.m  28.05.2011  GK
+  fixed small inconsistency in comment and action
+
+- process_cast.m, default_params.m  28.05.2011  GK
+  added params.print_formats  to default_params.m
+  at the moment ps/eps and jpg can be chosen
+
+- edit_data.m, default_params.m  28.05.2011  GK
+  added  params.minimum_correlation_threshold  as additional editing parameter
+  see  default_params.m  for more explanation
+
+- prepinv.m  28.05.2011  GK
+  looks like small bug in tilt_weight application
+
+- besttlag.m  20.05.2011  GK
+  renamed to calc_adcp_ctd_lag.m
+
+- rdiload.m  20.05.2011  GK
+  replace bestlag.m with bestlag2.m but keep it as check, if correlation
+  between up and downlooker is bad
+
+- plot_rawinfo.m  20.05.2011 GK
+  add colors to beam performance text
+
+- rdiload.m  14.05.2011 GK
+  use error velocity for bestlag calculation preparation
+
+- rdiload.m  
+  whread.m  13.05.2011 GK
+  read instrument serial number
+
+- plot_result.m  
+  default_params.m  12.05.2011 GK
+  variable btrk plot range (before limited to 250m)
+
+---------------------------------------------------------------------------
+
+Changes in 10.11
+
+- switch to magnetic field model IGRF11
+
+---------------------------------------------------------------------------
+
+Changes in 10.10
+
+- modified handling of filenames, so that cruise_id is part of the filenames
+
+---------------------------------------------------------------------------
+
+Changes in 10.9
+
+- replaced finite in geterr.m & plot_results.m with isfinite
+  isfinite exists in >6.1  but finite was removed from 7.9
+
+- whread_multi.m  Pad with NaNs if there are longer gaps between
+  the data files
+
+---------------------------------------------------------------------------
+  
+Changes in 10.8:
+
+- introduced new values for data files. This allows to skip actions 
+  if the data are not available
+  values.ctdprofdata
+  values.ctdtimedata
+  values.navdata
+  values.sadcpdata
+
+- getbtrack.m  Changed default bottom track range accoding to bin length.
+
+- calc_depth.m , default_parms.m Major changes to recover old functionality
+  to calculate  ADCP depth from integrated W and surface and bottom track 
+  data. Now also uses build in ADCP pressure sensor with a given 
+  weight for the inversion. Changed color of depth plot lines.
+
+- misc_cut_profile.m moved surface and bottom detection to calc_depth.m
+  enhanced the plotting capabilitied for shallow casts.
+
+- plot_results.m allow plot of bottom track data for shallower casts.
+
+- calc_ens_av.m changed the way shallow cast get handled to switch to 
+  p.avens = 2. Warning for avens = 1 some checks for bad data can not be 
+  done and have caused the inversion to fail in some cases.
+
+- replace.m IS WRONG! and causes the read_sbe to crash!!!
+  this was fixed    read_sbe_cnv   now calls  nans.m which does the
+  same as replace.m but with different arguments
+
+- process_cast(stn) with a negative stn now calls  clear_prep(-stn)
+
+- updated the seawater library to version 3.2 of 19-Apr-2006 
+
+---------------------------------------------------------------------------
+
+Changes in 10.7:
+
+- startup.m
+  moved m directory to last position so that modified
+  files can be stored there
+  I.e. if one changes a files from m/ladcp, please copy it
+  to local m directory and modify there.
+
+- rdiload.m, edit_data.m
+  p.maxbinrange has no effect in rdiload anymore
+  is moved to edit_data.m
+
+- rdiload.m, default_params.m
+  introduced to params.clear_ladcp_pressure
+  to clear LADCP pressure records. If there is not CTD
+  pressure record, w integration should be used for depth.
+
+- simple_bar.m
+  more colors possible
+
+- rdiload.m, default_params.m
+  added params.up2down that will control the resampling of the data
+  for not synchronous pinging
+
+- figload.m 
+  It was noted that colorbars got lost in the fig saving process and
+  that paper orientations were not ok. This appeared under versions
+  7.4 (possibly others too). The problem was in the saving and loading
+  of the fig files. After much browsing of mathworks support site
+  I found a variation of the figure loading part that seems to work
+  fine. At the moment implemented for >=7.4  but will be tested for
+  older versions too.
+
+- process_cast.m
+  added several 'drawnow' statements
+  since in new Matlab versions the figure was not updated until
+  finished with everything
+
+- plot_menu.m
+  changed location of plot for OSX so that taskbar does not overlap
+
+- process_cast.m
+  Under OSX plots are saved as eps now.
+  
+---------------------------------------------------------------------------
+
+Changes in 10.6:
+
+- rdiload.m
+  single ping errors were wrongly calculated when using ensembles
+  with more than one ping
+  errors were estimated too small by a factor of the number of pings
+
+- besttlag.m
+  Fixed warning in cases of NaN in the data. Should not make
+  any difference in the result.
+
+- saveres.m
+  Added some header info.
+
+- prep*.m
+  Changed save commands to use save6.m
+  THIS HAS NOT BEEN TESTED.
+
+- lanarrow.m  process_cast.m
+  lanarrow.m converted to function
+
+- bestlag2.m
+  bug fix handling data set lengths
+
+- read_sbe_cnv.m 
+  nans.m was used in one routine. This should have been 
+  replace.m
+
+- prep_ctdprof.m
+  was using deprecated field name for nmea_utc_time

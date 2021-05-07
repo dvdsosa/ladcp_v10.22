@@ -1,0 +1,42 @@
+    LADCP processing protocol 
+ 
+Station name         : SAGA_002 
+ 
+LADCP input files    : 
+down                 : data/raw_ladcp/002/002DN000.000 
+up                   : data/raw_ladcp/002/002UP000.000 
+ 
+Command file info    :  
+ 
+Prof start (LADCP)   : 2021  3 13 11 59 4.155000e+01 
+Prof end (LADCP)     : 2021  3 13 15 47 6.710000e+00 
+Start position       : -46.50672  -45.01290
+End position         : -46.50671  -45.01290
+Magnetic deviation   : -10.042259 
+Time offset          : 0.000000 
+Depths               : 9.249516e+00 NaN 9.826963e+00 
+ 
+Processing thresholds  
+ 
+min percent good     : 0.000000 
+max error velocity   : 0.500000 
+max w variability    : 0.200000 
+ 
+Processing results  
+ 
+u ship speed   (m/s) : 0.000000 
+v ship speed   (m/s) : 0.000081 
+x displacement   (m) : 0.000000 
+y displacement   (m) : 1.103727 
+bottom found at  (m) : 5345.627122 
+maximum instr dep(m) : 5235.829523 
+maximum prof dep (m) : 5312.000000 
+bottom track mode    : 3.000000 
+bottom track thrsd   : 30.000000 
+bottom track range   : 32.000000 
+bottom track range   : 320.000000 
+bottom track source  : RDI 
+profile ensembles    : 2621 to 15743 
+ 
+Computer : MACI64 
+Total processing time:  234 seconds 
