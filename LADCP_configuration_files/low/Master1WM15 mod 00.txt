@@ -1,0 +1,117 @@
+;
+;      Mod Loic 26 oct 2009
+;
+; Append command to the log file: "C:\Users\PC_procesamiento\Desktop\LADCP\Logs\MLADCP.log" 
+;$lC:\Users\PC_procesamiento\Desktop\LADCP\Logs\MLADCP.log
+;
+$P ************************************************************************* 
+$P ******************* LADCP Master. Usually looking down ****************** 
+$P ************* Master and Slave will ping at the same time! ************** 
+$P ************************************************************************* 
+; Send ADCP a BREAK
+$B
+; Wait for command prompt (sent after each command) 
+$W62
+;**Start** 
+; Display real time clock setting 
+TT?
+$W62
+; Set to factory defaults
+CR1
+$W62
+; Set Water Mode 15 LADCP
+WM15
+$W62
+;   set bottom detection threshold
+LZ030,220
+$W62
+; Set baud rate to 9600
+; CB411
+; $W62
+; Save settings as User defaults
+; CK
+;  $W62
+; Name data file
+RN MLADCP
+$W62
+; Set transducer depth to zero 
+ED0000
+$W62
+; Set salinity to 35ppt 
+ES35
+$W62
+; Set system coordinate. 
+EX11111
+$W62
+; SET AS MASTER ADCP 
+SM1
+$W62
+; TRANSMITS SYNCHRONIZING PULSE BEFORE EACH WATER PING 
+SA001
+$W62
+; SYNCHRONIZING PULSE SENT ON EVERY PING 
+SI0
+$W62
+;WAIT 7.5 MILLISECONDS 
+SW75
+$W62
+; Set one ensemble/sec 
+TE00000100
+$W62
+; Set one second between pings 
+TP000100
+$W62
+; Set LADCP to output Velocity, Correlations, Amplitude, and Percent Good 
+WD111100000
+$W62
+; Set one ping per ensemble. Also sets LP command. 
+WP1
+$W62
+; Set to record 12 bins. Also sets LN command. 
+WN012
+$W62
+; Set bin size to 1600 cm. Also sets LS command. 
+WS1600
+$W62
+; Set blank to 176 cm (default value) Also sets LF command. 
+WF0176
+$W62
+; Set max radial (along the axis of the beam) water velocity to 170 cm/sec. 
+; Also sets LV command. 
+WV170
+$W62
+; Set ADCP to narrow bandwidth and extend range by 10%
+; Also sets LW command.
+WB1
+$W62
+; Set to use a fixed speed of the sound
+EZ0111111
+$W62
+; Set speed of sound value. 1500 m/sec is default. 
+EC1500
+$W62
+; Heading alignment set to 0 degrees 
+EA00000
+$W62
+; Heading bias set to 0 degrees 
+EB00000
+$W62
+; Record data internally 
+CF11101
+$W62
+; Save set up 
+CK
+$W62
+; Start pinging 
+CS
+; Delay 3 seconds 
+$D3
+$p ************************************************************************* 
+$P Please disconnect the ADCP from the computer. 
+$P ************************************************************************* 
+; Delay 7 seconds 
+$D7
+; Close the log file 
+$l
+; Exit BBTalk 
+$X
