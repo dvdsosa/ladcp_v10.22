@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Window_Filter >
+  <Version value="7.26.7.129" />
+  <ServerName value="Window Filter" />
+  <InputDir value="C:\Users\David\Desktop\SAGA-CTD\tipo1" />
+  <InputFileArray size="0" GrowBy="-1" />
+  <OutputDir value="C:\Users\David\Desktop\SAGA-CTD\tipo1" />
+  <NameAppend value="" />
+  <OutputFile value="" />
+  <LastProcessed value="0" />
+  <ExcludeMarkedBad value="1" />
+  <CalcArray Size="0" />
+  <FilterParamArray size="0" />
+</Window_Filter>

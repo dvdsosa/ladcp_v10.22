@@ -1,0 +1,6 @@
+@ los archivos generados por este batch irán a la carpeta:
+@ raw_ctdtime
+@ raw_ctdnav
+datcnv   /i%1\*.hex /c%1\SAGA.XMLCON /p%1\tipo2\DatCnv.psa /o%1\tipo2\out2\
+loopedit /i%1\tipo2\out2\*.cnv /c%1\SAGA.XMLCON /p%1\tipo2\LoopEdit.psa /o%1\tipo2\out2\
+binavg   /i%1\tipo2\out2\*.cnv /p%1\tipo2\BinAvg.psa /o%1\tipo2\out2\

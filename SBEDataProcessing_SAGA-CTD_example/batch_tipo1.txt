@@ -1,0 +1,9 @@
+@ los archivos generados por este batch irán a la carpeta:
+@ raw_ctdprof
+datcnv   /i%1\*.hex /c%1\SAGA.XMLCON /p%1\tipo1\DatCnv.psa /o%1\tipo1\out1\
+wildedit /i%1\tipo1\out1\*.cnv /p%1\tipo1\WildEdit.psa /o%1\tipo1\out1\
+filter   /i%1\tipo1\out1\*.cnv /p%1\tipo1\Filter.psa /o%1\tipo1\out1\
+alignctd /i%1\tipo1\out1\*.cnv /p%1\tipo1\AlignCTD.psa /o%1\tipo1\out1\
+celltm   /i%1\tipo1\out1\*.cnv /p%1\tipo1\CellTM.psa /o%1\tipo1\out1\
+loopedit /i%1\tipo1\out1\*.cnv /c%1\SAGA.XMLCON /p%1\tipo1\LoopEdit.psa /o%1\tipo1\out1\
+binavg   /i%1\tipo1\out1\*.cnv /p%1\tipo1\BinAvg.psa /o%1\tipo1\out1\

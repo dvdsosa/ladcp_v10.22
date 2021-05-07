@@ -1,0 +1,32 @@
+* Sea-Bird SBE 9 Data File:
+* FileName = C:\Users\CTD01\Desktop\CTD_SAGA\ST003.hdr
+* Software Version Seasave V 7.26.7.121
+* Temperature SN = 4669
+* Conductivity SN = 3289
+* Number of Bytes Per Scan = 37
+* Number of Voltage Words = 4
+* Number of Scans Averaged by the Deck Unit = 1
+* System UpLoad Time = Mar 14 2021 00:58:43
+* NMEA Latitude = 45 00.25 S
+* NMEA Longitude = 045 00.00 W
+* NMEA UTC (Time) = Mar 14 2021 00:58:38
+* Store Lat/Lon Data = Append to Every Scan
+* SBE 11plus V 5.1g
+* number of scans to average = 1
+* pressure baud rate = 9600
+* NMEA baud rate = 9600
+* Latitude/Longitude added to scan
+* GPIB address = 1
+* advance primary conductivity  0.073 seconds
+* advance secondary conductivity  0.073 seconds
+* autorun on power up is disabled
+* S>
+** Ship:Sarmiento de Gamboa 
+** Cruise:SAGA 10W 
+** Cast:  003
+** Station:  003
+** Depth:  5198
+** Date:  14/03/2021
+** Time:  00:58
+* System UTC = Mar 14 2021 00:58:43
+*END*
